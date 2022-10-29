@@ -126,7 +126,8 @@ double Classifier::train_epoch(int cnt, double** data, unsigned int* labels,
   int train = 1;
 
   // number of batches
-  int num_batches = cnt / batch_size;
+  int this_batch_size;
+  int num_batches = ceil( ((double) cnt) / batch_size );
 
   // allocate array for vector to feed back into backpropagation
   double* out = new double[ layer_sizes[num_layers] ];
@@ -149,12 +150,20 @@ double Classifier::train_epoch(int cnt, double** data, unsigned int* labels,
   for (int b = 0; b < num_batches; b++) {
     // clear partial derivatives
     clear_partial();
+
+    // if not enough samples left for a full batch, use what we have left
+    if (b == num_batches-1) {
+      this_batch_size = cnt - (num_batches-1)*batch_size;
+    }
+    else {
+      this_batch_size = batch_size;
+    }
     
     // compute contributions to paritals from each training sample in batch
     // determine this processor's interval
-    int is = ((int) (batch_size/numprocs))*myid;
-    int ie = ((int) (batch_size/numprocs))*(myid+1);
-    if (myid == numprocs-1) ie = batch_size;
+    int is = ((int) (this_batch_size/numprocs))*myid;
+    int ie = ((int) (this_batch_size/numprocs))*(myid+1);
+    if (myid == numprocs-1) ie = this_batch_size;
 
     for (int i = is; i < ie; i++) {
       // index of training sample in data array
@@ -179,7 +188,7 @@ double Classifier::train_epoch(int cnt, double** data, unsigned int* labels,
     // step 4: now that we have finished with our mini-batch, update net parameters
     // using accumulated partial derivatives for entire mini-batch
     // (stochastic gradient descent)
-    update_param(lr, batch_size);
+    update_param(lr, this_batch_size);
   }
 
   delete[] order;
