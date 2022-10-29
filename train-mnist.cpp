@@ -42,6 +42,7 @@ int main(int argc, char* argv[]) {
 
   // timers
   double batch_time, loss_time, timer;
+  double total_time = 0;
 
   // arrays to be allocated for data and labels
   // training
@@ -181,6 +182,7 @@ int main(int argc, char* argv[]) {
   train_loss = C.loss;
   loss_time += C.compute_loss(test_cnt, test_data, test_labels);
   test_acc = C.accuracy;
+  total_time += loss_time;
 
   if (myid == 0) {
     std::cout 
@@ -203,11 +205,14 @@ int main(int argc, char* argv[]) {
 
     batch_time = C.train_epoch(train_cnt, train_data, train_labels, 
           learning_rate, weight_decay, batch_size);
+    total_time += batch_time;
 
     loss_time  = C.compute_loss(train_cnt, train_data, train_labels);
     train_acc = C.accuracy;
     train_loss = C.loss;
     loss_time += C.compute_loss(test_cnt, test_data, test_labels);
+    total_time += loss_time;
+
     test_acc = C.accuracy;
 
     if (myid == 0) {
@@ -221,6 +226,11 @@ int main(int argc, char* argv[]) {
         << std::setw(20) << batch_time
         << std::endl;
     }
+  }
+
+  // print total time
+  if (myid == 0) {
+    std::cout << "Total time: " << total_time << std::endl;
   }
 
   // unallocate training data
