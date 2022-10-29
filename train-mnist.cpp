@@ -27,6 +27,7 @@ int main(int argc, char* argv[]) {
     return 1;
   }
   whoami(numprocs, myid);
+  if (myid == 0) std::cout << "Number of MPI ranks: " << numprocs << std::endl << std::endl;
 #else
   numprocs = 1;
   myid = 0;
