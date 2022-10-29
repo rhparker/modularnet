@@ -2,6 +2,6 @@
 
 Modular neural network in C++ for classification problems.
 
-Works with OMP, uses shared memory to store network.
+MPI is optional
 
 Loads data from MNIST dataset
