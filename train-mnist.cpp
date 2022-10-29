@@ -103,17 +103,17 @@ int main(int argc, char* argv[]) {
   //   {SOFTMAX, 10}
   // };
 
-  // one convolutional layer
-  std::vector< std::vector <int > > config = {
-    {LINEAR,784, 64},
-    {RELU, 64},
-    {DROPOUT, 64},
-    {CONV, 1,8,8,1,1,1},
-    {MAXPOOL,1,8,8,1,1,2,2},
-    {RELU, 16},
-    {LINEAR,16, 10},
-    {SOFTMAX, 10}
-  };
+  // // one convolutional layer
+  // std::vector< std::vector <int > > config = {
+  //   {LINEAR,784, 64},
+  //   {RELU, 64},
+  //   {DROPOUT, 64},
+  //   {CONV, 1,8,8,1,1,1},
+  //   {MAXPOOL,1,8,8,1,1,2,2},
+  //   {RELU, 16},
+  //   {LINEAR,16, 10},
+  //   {SOFTMAX, 10}
+  // };
 
   // // one convolutional layer, multi-channel
   // std::vector< std::vector <int > > config = {
@@ -127,25 +127,25 @@ int main(int argc, char* argv[]) {
   //   {SOFTMAX, 10}
   // };
 
-  // // LeNet modernized
-  // std::vector< std::vector <int > > config = {
-  //   {CONV, 1,28,28,6,2,2},
-  //   {RELU, 4704},
-  //   {DROPOUT, 4704},
-  //   {MAXPOOL, 6,28,28,1,1,2,2},
-  //   {CONV, 6,14,14,16,2,2},
-  //   {RELU, 3136},
-  //   {DROPOUT, 3136},
-  //   {MAXPOOL, 16,14,14,1,1,2,2},
-  //   {LINEAR,784,120},
-  //   {RELU, 120},
-  //   {DROPOUT,120},
-  //   {LINEAR, 120,84},
-  //   {RELU, 84},
-  //   {DROPOUT,84},
-  //   {LINEAR, 84,10},
-  //   {SOFTMAX, 10}
-  // };
+  // LeNet modernized
+  std::vector< std::vector <int > > config = {
+    {CONV, 1,28,28,6,2,2},
+    {RELU, 4704},
+    {DROPOUT, 4704},
+    {MAXPOOL, 6,28,28,1,1,2,2},
+    {CONV, 6,14,14,16,2,2},
+    {RELU, 3136},
+    {DROPOUT, 3136},
+    {MAXPOOL, 16,14,14,1,1,2,2},
+    {LINEAR,784,120},
+    {RELU, 120},
+    {DROPOUT,120},
+    {LINEAR, 120,84},
+    {RELU, 84},
+    {DROPOUT,84},
+    {LINEAR, 84,10},
+    {SOFTMAX, 10}
+  };
 
   Classifier C( config, sigma );
 #ifdef USE_MPI
