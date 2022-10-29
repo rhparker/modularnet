@@ -94,26 +94,26 @@ int main(int argc, char* argv[]) {
   //   {SOFTMAX, 10}
   // };
 
-  // two layers linear with dropout
-  std::vector< std::vector <int > > config = {
-    {LINEAR,784, 64},
-    {RELU, 64},
-    {DROPOUT, 64},
-    {LINEAR,64, 10},
-    {SOFTMAX, 10}
-  };
-
-  // // one convolutional layer
+  // // two layers linear with dropout
   // std::vector< std::vector <int > > config = {
   //   {LINEAR,784, 64},
   //   {RELU, 64},
   //   {DROPOUT, 64},
-  //   {CONV, 1,8,8,1,1,1},
-  //   {MAXPOOL,1,8,8,1,1,2,2},
-  //   {RELU, 16},
-  //   {LINEAR,16, 10},
+  //   {LINEAR,64, 10},
   //   {SOFTMAX, 10}
   // };
+
+  // one convolutional layer
+  std::vector< std::vector <int > > config = {
+    {LINEAR,784, 64},
+    {RELU, 64},
+    {DROPOUT, 64},
+    {CONV, 1,8,8,1,1,1},
+    {MAXPOOL,1,8,8,1,1,2,2},
+    {RELU, 16},
+    {LINEAR,16, 10},
+    {SOFTMAX, 10}
+  };
 
   // // one convolutional layer, multi-channel
   // std::vector< std::vector <int > > config = {
