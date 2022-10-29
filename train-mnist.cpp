@@ -14,6 +14,20 @@
 #include "classifier.h"
 #include "loadmnist.h"
 
+#define FASHION
+
+#ifdef FASHION
+  #define TRAIN_IMAGES "fashion/train-images-idx3-ubyte"
+  #define TRAIN_LABELS "fashion/train-labels-idx1-ubyte"
+  #define TEST_IMAGES  "fashion/t10k-images-idx3-ubyte"
+  #define TEST_LABELS  "fashion/t10k-labels-idx1-ubyte"
+#else
+  #define TRAIN_IMAGES "mnist/train-images-idx3-ubyte"
+  #define TRAIN_LABELS "mnist/train-labels-idx1-ubyte"
+  #define TEST_IMAGES  "mnist/t10k-images-idx3-ubyte"
+  #define TEST_LABELS  "mnist/t10k-labels-idx1-ubyte"
+#endif
+
 int main(int argc, char* argv[]) {
 
   int numprocs, myid;
@@ -55,8 +69,7 @@ int main(int argc, char* argv[]) {
   unsigned int* test_labels;
 
   // load training data
-  train_cnt = mnist_load("mnist/train-images-idx3-ubyte", "mnist/train-labels-idx1-ubyte", 
-        train_data, train_labels);
+  train_cnt = mnist_load(TRAIN_IMAGES, TRAIN_LABELS, train_data, train_labels);
   if (train_cnt <= 0) {
     printf("An error occured loading training data: %d\n", train_cnt);
   } 
@@ -65,8 +78,7 @@ int main(int argc, char* argv[]) {
   }
 
   // load test data
-  test_cnt = mnist_load("mnist/t10k-images-idx3-ubyte", "mnist/t10k-labels-idx1-ubyte", 
-        test_data, test_labels);
+  test_cnt = mnist_load(TEST_IMAGES, TEST_LABELS, test_data, test_labels);
   if (test_cnt <= 0) {
     printf("An error occured loading test data: %d\n", test_cnt);
   } 
@@ -195,9 +207,9 @@ int main(int argc, char* argv[]) {
       << std::endl;
   }
 
-  int epochs = 5;
+  int epochs = 10;
   int batch_size = 256;
-  double learning_rate = 0.1;
+  double learning_rate = 0.5;
   double weight_decay = 0;
 
   // run training epochs
