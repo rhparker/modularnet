@@ -6,7 +6,7 @@
 #include <iomanip>
 #include <vector>
 
-#ifdef MPI
+#ifdef USE_MPI
   #include "mpi.h"
   #include "mpiutil.h"
 #endif
@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
 
   int numprocs, myid;
 
-#ifdef MPI
+#ifdef USE_MPI
   // initialize MPI
   int ierr;
   ierr = MPI_Init(&argc, &argv);
@@ -147,7 +147,7 @@ int main(int argc, char* argv[]) {
   };
 
   Classifier C( config, sigma );
-#ifdef MPI
+#ifdef USE_MPI
   C.sync();
 #endif
 
@@ -236,7 +236,7 @@ int main(int argc, char* argv[]) {
   delete[] test_data;
   delete[] test_labels;
 
-#ifdef MPI
+#ifdef USE_MPI
   // finalize MPI
   ierr = MPI_Finalize();
 #endif

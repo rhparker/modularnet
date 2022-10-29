@@ -3,7 +3,7 @@
 #include <cmath>
 #include <stdio.h>
 
-#ifdef MPI
+#ifdef USE_MPI
   #include "mpi.h"
   #include "mpiutil.h"
 #endif
@@ -45,7 +45,7 @@ void Layer::clear_partial() {
 
 // update parameters using accumulated partial derivatives
 void Layer::update_param(double lr, int batch_size) {
-#ifdef MPI
+#ifdef USE_MPI
   double* update = new double[pars];
   MPI_Allreduce(partial, update, pars, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
   for (int i = 0; i < pars; i++) {
@@ -60,7 +60,7 @@ void Layer::update_param(double lr, int batch_size) {
 }
 
 // syncs layer in all ranks to rank 0
-#ifdef MPI
+#ifdef USE_MPI
 void Layer::sync() {
   int numprocs, myid;
   whoami(numprocs, myid);

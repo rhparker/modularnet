@@ -43,7 +43,7 @@ class Layer {
     // update parameters using accumulated partial derivatives
     void update_param(double lr, int batch_size);
 
-#ifdef MPI
+#ifdef USE_MPI
     // syncs layer in all ranks to rank 0
     void sync();
 #endif

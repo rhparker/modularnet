@@ -11,7 +11,7 @@
 #include "classifier.h"
 
 // timer
-#ifdef MPI
+#ifdef USE_MPI
   #include "mpi.h"
   #include "mpiutil.h"
   #define get_time() MPI_Wtime()
@@ -51,7 +51,7 @@ Classifier::~Classifier() {};
 double Classifier::compute_loss(int cnt, double** data, unsigned int* labels) {
 
   int numprocs, myid;
-#ifdef MPI
+#ifdef USE_MPI
   whoami(numprocs, myid);
 #else
   numprocs = 1;
@@ -87,7 +87,7 @@ double Classifier::compute_loss(int cnt, double** data, unsigned int* labels) {
     my_loss -= log( z[num_layers][ labels[i] ] );
   }
 
-#ifdef MPI
+#ifdef USE_MPI
   MPI_Allreduce(&my_correct, &total_correct, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
   MPI_Allreduce(&my_loss, &loss, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
 #else
@@ -112,7 +112,7 @@ double Classifier::train_epoch(int cnt, double** data, unsigned int* labels,
                                   double lr, double wd, unsigned int batch_size) {
 
   int numprocs, myid;
-#ifdef MPI
+#ifdef USE_MPI
   whoami(numprocs, myid);
 #else
   numprocs = 1;
@@ -142,7 +142,7 @@ double Classifier::train_epoch(int cnt, double** data, unsigned int* labels,
     std::random_shuffle(order, order+cnt, myrandom);
   }
 
-#ifdef MPI
+#ifdef USE_MPI
   MPI_Bcast(order, cnt, MPI_INT, 0, MPI_COMM_WORLD);
 #endif
 

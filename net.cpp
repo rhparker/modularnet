@@ -69,7 +69,7 @@ void Net::update_param(double lr, int batch_size) {
   }
 }
 
-#ifdef MPI
+#ifdef USE_MPI
 // sync paramaters of all ranks in all layers to rank 0
 void Net::sync() {
   for (int i = 0; i < num_layers; i++) {

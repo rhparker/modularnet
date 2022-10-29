@@ -35,7 +35,7 @@ class Net {
     // update parameters using accumulated partial derivatives
     void update_param(double lr, int batch_size);
 
-#ifdef MPI
+#ifdef USE_MPI
     // sync paramaters of all ranks in all layers to rank 0
     void sync();
 #endif
