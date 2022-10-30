@@ -14,7 +14,7 @@
 #include "classifier.h"
 #include "loadmnist.h"
 
-#define FASHION
+// #define FASHION
 
 #ifdef FASHION
   #define TRAIN_IMAGES "fashion/train-images-idx3-ubyte"
@@ -140,23 +140,43 @@ int main(int argc, char* argv[]) {
   //   {SOFTMAX, 10}
   // };
 
-  // LeNet modernized
+  // // LeNet modernized
+  // std::vector< std::vector <int > > config = {
+  //   {CONV, 1,28,28,6,2,2},
+  //   {RELU, 4704},
+  //   {MAXPOOL, 6,28,28,1,1,2,2},
+  //   {CONV, 6,14,14,16,2,2},
+  //   {RELU, 3136},
+  //   {MAXPOOL, 16,14,14,1,1,2,2},
+  //   {LINEAR,784,120},
+  //   {RELU, 120},
+  //   {DROPOUT,120},
+  //   {LINEAR, 120,84},
+  //   {RELU, 84},
+  //   {DROPOUT,84},
+  //   {LINEAR, 84,10},
+  //   {SOFTMAX, 10}
+  // };
+
+  // Alexnet, modified for MNIST
   std::vector< std::vector <int > > config = {
-    {CONV, 1,28,28,6,2,2},
-    {RELU, 4704},
-    {DROPOUT, 4704},
-    {MAXPOOL, 6,28,28,1,1,2,2},
-    {CONV, 6,14,14,16,2,2},
-    {RELU, 3136},
-    {DROPOUT, 3136},
-    {MAXPOOL, 16,14,14,1,1,2,2},
-    {LINEAR,784,120},
-    {RELU, 120},
-    {DROPOUT,120},
-    {LINEAR, 120,84},
-    {RELU, 84},
-    {DROPOUT,84},
-    {LINEAR, 84,10},
+    {CONV,    1,28,28,128,2,2 },
+    {RELU,    100352 },
+    {MAXPOOL, 128,28,28,1,1,2,2},
+    {CONV,    128,14,14,256,1,1},
+    {RELU,    50176},
+    {CONV,    256,14,14,256,1,1},
+    {RELU,    50176},
+    {CONV,    256,14,14,128,1,1},
+    {RELU,    25088},
+    {MAXPOOL, 128,14,14,1,1,2,2},
+    {LINEAR, 6272, 4096},
+    {RELU, 4096},
+    {DROPOUT, 4096},
+    {LINEAR, 4096, 4096},
+    {RELU, 4096},
+    {DROPOUT, 4096},
+    {LINEAR, 4096, 10},
     {SOFTMAX, 10}
   };
 
@@ -170,7 +190,7 @@ int main(int argc, char* argv[]) {
       C.properties();
     std::cout << std::endl;
   }
-  
+
   //
   // run training epochs
   //
@@ -207,9 +227,9 @@ int main(int argc, char* argv[]) {
       << std::endl;
   }
 
-  int epochs = 10;
+  int epochs = 1;
   int batch_size = 256;
-  double learning_rate = 0.5;
+  double learning_rate = 0.01;
   double weight_decay = 0;
 
   // run training epochs
