@@ -229,7 +229,7 @@ int main(int argc, char* argv[]) {
 
   int epochs = 10;
   int batch_size = 256;
-  double learning_rate = 0.02;
+  double learning_rate = 0.01;
   double weight_decay = 0;
 
   // run training epochs
