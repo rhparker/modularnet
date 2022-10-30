@@ -148,6 +148,11 @@ double Classifier::train_epoch(int cnt, double** data, unsigned int* labels,
 
   // iterate over batches
   for (int b = 0; b < num_batches; b++) {
+
+#ifdef PROGRESS
+    if (myid == 0) printf("Batch %d out of %d\n", b, num_batches);
+#endif
+
     // clear partial derivatives
     clear_partial();
 
