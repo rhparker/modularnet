@@ -227,7 +227,7 @@ int main(int argc, char* argv[]) {
       << std::endl;
   }
 
-  int epochs = 1;
+  int epochs = 10;
   int batch_size = 256;
   double learning_rate = 0.01;
   double weight_decay = 0;

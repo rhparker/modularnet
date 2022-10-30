@@ -13,7 +13,7 @@ MPICC = mpicc
 CFLAGS   = -O2
 CXXFLAGS = -O2 -std=c++11
 FFLAGS   = -O2
-CPPFLAGS_MPI = -DUSE_MPI -DPROGRESS
+CPPFLAGS_MPI = -DUSE_MPI
 
 # makefile targets
 all : train-mnist-mpi
