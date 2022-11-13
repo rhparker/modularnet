@@ -96,6 +96,13 @@ int main(int argc, char* argv[]) {
   // learning rate
   double learning_rate;
 
+  // network parameters
+  int epochs = 10;
+  int batch_size = 256;
+  double weight_decay = 0;
+
+  // lots of network architectures to choose from!
+
   // // one layer linear
   // std::vector< std::vector <int > > config = {
   //   {LINEAR, 784, 10},
@@ -253,10 +260,6 @@ int main(int argc, char* argv[]) {
       << std::setw(20) << loss_time
       << std::endl;
   }
-
-  int epochs = 2;
-  int batch_size = 256;
-  double weight_decay = 0;
 
   // run training epochs
   for (int i = 1; i <= epochs; i++) {
