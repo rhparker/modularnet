@@ -21,7 +21,7 @@
 #define idx(n,i,j) (n*i + j)
 // macro for generic index in 3D
 #define idx3(m,n,c,i,j) (m*n*c + n*i + j)
-// macro for 3D kernel
+// macro for convolutional kernel
 #define ker3(p,co,ci,i,j) p[ ( (2*ker_m+1)*(2*ker_n+1)*input_c*co + (2*ker_m+1)*(2*ker_n+1)*ci + (2*ker_n+1)*i + j ) ] 
 
 //
