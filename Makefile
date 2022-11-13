@@ -19,10 +19,10 @@ CPPFLAGS_MPI = -DUSE_MPI
 all : train-mnist-mpi
 
 train-mnist-mpi : train-mnist.cpp
-	$(MPICXX) $(CXXFLAGS) $(CPPFLAGS_MPI) train-mnist.cpp loadmnist.cpp layer.cpp net.cpp classifier.cpp sequential.cpp mpiutil.cpp -lm -o train-mnist
+	$(MPICXX) $(CXXFLAGS) $(CPPFLAGS_MPI) train-mnist.cpp loadmnist.cpp layer.cpp net.cpp classifier.cpp mpiutil.cpp module.cpp -lm -o train-mnist
 
 train-mnist : train-mnist.cpp
-	$(CXX) $(CXXFLAGS) train-mnist.cpp loadmnist.cpp layer.cpp net.cpp classifier.cpp sequential.cpp -lm -o train-mnist
+	$(CXX) $(CXXFLAGS) train-mnist.cpp loadmnist.cpp layer.cpp net.cpp classifier.cpp module.cpp -lm -o train-mnist
 
 
 clean :

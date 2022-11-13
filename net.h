@@ -1,24 +1,37 @@
-#include "layer.h"
+#include "module.h"
+#include <vector>
+
+#ifndef _NET
+#define _NET
 
 class Net {
   public:
-    int num_layers;
-    int* layer_sizes;
+    // number of modules
+    int num_modules;
+    // input/output sizes of modules
+    int* module_sizes;
+    // types of layers
+    int* module_types;
+    // is network valid?
+    int valid;
     
     // total number of parameters
     int pars;
 
     // layers
-    Layer** L;
+    Module** M;
 
-    // z: data (inputs and outputs from layers) 
+    // z: data (inputs and outputs from modules) 
     double** z;
-    // delta: partial derivatives with respect to layer outputs z
+    // delta: partial derivatives with respect to module outputs z
     double** delta;
 
     // constructor and destructor
-    Net(int num_layers);
+    Net(std::vector< std::vector <int> > config);
     ~Net(); 
+
+    // add layers to a module
+    void add_layers(int module_id, std::vector< std::vector <int> > config, double sigma);
 
     // forward propagation on input
     void forward(double* in, int train);
@@ -35,9 +48,14 @@ class Net {
     // update parameters using accumulated partial derivatives
     void update_param(double lr, int batch_size);
 
+    // print properties
+    void properties();
+
 #ifdef USE_MPI
     // sync paramaters of all ranks in all layers to rank 0
     void sync();
 #endif
 
 };
+
+#endif

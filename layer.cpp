@@ -35,6 +35,7 @@ Layer::~Layer() {};
 void Layer::print_params() {};
 void Layer::properties() {};
 void Layer::partial_param(double* in, double* delta) {};
+void Layer::add_layers(std::vector< std::vector <int> > config, double sigma) {};
 
 // clear accumulated partial derivaties 
 void Layer::clear_partial() {
@@ -75,7 +76,7 @@ void Layer::sync() {
 //
 
 // constructor and destructor
-Linear::Linear(std::vector<int>  config, double sigma) 
+Linear::Linear(std::vector<int> config, double sigma) 
       : Layer(config[1], config[2]) {
 
   // number of parameters (weights and biases)
@@ -189,6 +190,7 @@ inline double d_sig(double x) {
 
 // constructor and destructor
 Sigmoid::Sigmoid(std::vector<int> config) : Layer(config[1], config[1]) {};
+Sigmoid::Sigmoid(int inputs) : Layer(inputs, inputs) {};
 
 Sigmoid::~Sigmoid() {};
 
@@ -213,7 +215,7 @@ void Sigmoid::backward(double* in, double* out, double* delta) {
 }
 
 //
-// sigmoid activation layer
+// ReLu activation layer
 //
 
 // rectified linear unit (single element)
@@ -228,6 +230,7 @@ inline double d_rec(double x) {
 
 // constructor and destructor
 ReLU::ReLU(std::vector<int> config) : Layer(config[1], config[1]) {};
+ReLU::ReLU(int inputs) : Layer(inputs, inputs) {};
 
 ReLU::~ReLU() {};
 
@@ -258,6 +261,7 @@ void ReLU::backward(double* in, double* out, double* delta) {
 
 // constructor and destructor
 Softmax::Softmax(std::vector<int> config) : Layer(config[1], config[1]) {};
+Softmax::Softmax(int inputs) : Layer(inputs, inputs) {};
 
 Softmax::~Softmax() {};
 
@@ -295,7 +299,14 @@ Dropout::Dropout(std::vector<int> config) :
     Layer(config[1], config[1]),
     gen(rd()), d(std::uniform_real_distribution<>(0,1)), 
     drop_prob(0.25) {
+  // allocate data for mask
+  mask = new int[inputs];
+};
 
+Dropout::Dropout(int inputs) :
+    Layer(inputs, inputs),
+    gen(rd()), d(std::uniform_real_distribution<>(0,1)), 
+    drop_prob(0.25) {
   // allocate data for mask
   mask = new int[inputs];
 };

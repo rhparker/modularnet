@@ -3,16 +3,19 @@
 // last layer uses softmax to get probability vector
 // loss function is cross-entropy
 
-#include "sequential.h"
+#include "net.h"
 
-class Classifier : public Sequential {
+#ifndef _CLASSIFIER
+#define _CLASSIFIER
+
+class Classifier : public Net {
   public:
     // stores current training accuracy, cross-entropy loss
     double accuracy;
     double loss;
 
     // constructor and destructor
-    Classifier(std::vector< std::vector <int> > config, double sigma);
+    Classifier(std::vector< std::vector <int> > config);
     ~Classifier(); 
 
     // compute cross-entropy loss and accuracy
@@ -22,3 +25,5 @@ class Classifier : public Sequential {
     double train_epoch(int cnt, double** data, unsigned int* labels, 
                           double lr, double wd, unsigned int batch_size);
 };
+
+#endif

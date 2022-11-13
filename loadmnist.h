@@ -3,6 +3,8 @@
 // modified to use c++ new for allocation and to return images as a single array
 // loads data as double
 
+#ifndef _LOADMNIST
+#define _LOADMNIST
 
 // MNIST image size
 #define IMAGESIZE 784
@@ -13,3 +15,5 @@ unsigned int mnist_load(
 	const char* label_filename,
 	double** &data,
 	unsigned int* &labels);
+
+#endif

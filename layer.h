@@ -1,6 +1,23 @@
 #include <random>
 #include <vector>
 
+#ifndef _LAYER
+#define _LAYER
+
+// layer types
+#define LINEAR 101
+#define DROPOUT 102
+#define CONV 103
+#define MAXPOOL 104
+
+// activations
+#define SIG 201
+#define RELU 202
+#define SOFTMAX 203
+
+// errors
+#define ERROR_SIZE_MISMATCH -1
+
 //
 // abstract layer class
 //
@@ -14,17 +31,15 @@ class Layer {
 
     // are we training or not?
     int train;
-    // samples we have used in training in this batch
-    int samples;
 
     // parameters and partial derivatives with respect to parameters
     double* param;
     double* partial;
 
-
     // constructor and destructor
     Layer(int inputs, int outputs);
     virtual ~Layer(); 
+    virtual void add_layers(std::vector< std::vector <int> > config, double sigma);
 
     // print parameters and properties
     virtual void print_params();
@@ -38,10 +53,10 @@ class Layer {
     virtual void partial_param(double* in, double* delta);
 
     // clear accumulated partial derivaties 
-    void clear_partial();
+    virtual void clear_partial();
 
     // update parameters using accumulated partial derivatives
-    void update_param(double lr, int batch_size);
+    virtual void update_param(double lr, int batch_size);
 
 #ifdef USE_MPI
     // syncs layer in all ranks to rank 0
@@ -67,11 +82,11 @@ class Linear : public Layer {
     void properties();
 
     // forward and backward propagation
-    virtual void forward(double* in, double* out);
-    virtual void backward(double* in, double* out, double* delta);
+    void forward(double* in, double* out);
+    void backward(double* in, double* out, double* delta);
 
     // update partial derivative of loss with respect to parmeters 
-    virtual void partial_param(double* in, double* delta);
+    void partial_param(double* in, double* delta);
 };
 
 //
@@ -82,14 +97,15 @@ class Sigmoid : public Layer {
   public:
      // constructor and destructor : same number of inputs and outputs
     Sigmoid(std::vector<int> config);
+    Sigmoid(int inputs);
     ~Sigmoid();
 
     // print properties
     void properties();
 
     // forward and backward propagation
-    virtual void forward(double* in, double* out);
-    virtual void backward(double* in, double* out, double* delta);
+    void forward(double* in, double* out);
+    void backward(double* in, double* out, double* delta);
 };
 
 //
@@ -100,14 +116,15 @@ class ReLU : public Layer {
   public:
      // constructor and destructor : same number of inputs and outputs
     ReLU(std::vector<int> config);
+    ReLU(int inputs);
     ~ReLU();
 
     // print properties
     void properties();
 
     // forward and backward propagation
-    virtual void forward(double* in, double* out);
-    virtual void backward(double* in, double* out, double* delta);
+    void forward(double* in, double* out);
+    void backward(double* in, double* out, double* delta);
 };
 
 //
@@ -118,14 +135,15 @@ class Softmax : public Layer {
   public:
      // constructor and destructor : same number of inputs and outputs
     Softmax(std::vector<int> config);
+    Softmax(int inputs);
     ~Softmax();
 
     // print properties
     void properties();
 
     // forward and backward propagation
-    virtual void forward(double* in, double* out);
-    virtual void backward(double* in, double* out, double* delta);
+    void forward(double* in, double* out);
+    void backward(double* in, double* out, double* delta);
 };
 
 
@@ -143,6 +161,7 @@ class Dropout : public Layer {
 
     // constructor and destructor : same number of inputs and outputs
     Dropout(std::vector<int> config);
+    Dropout(int inputs);
     ~Dropout();
 
     // set dropout probability (default from constructor is 0.25)
@@ -152,8 +171,8 @@ class Dropout : public Layer {
     void properties();
 
     // forward and backward propagation
-    virtual void forward(double* in, double* out);
-    virtual void backward(double* in, double* out, double* delta);
+    void forward(double* in, double* out);
+    void backward(double* in, double* out, double* delta);
 
   private:
     // uniform[0,1] random number generator
@@ -190,8 +209,8 @@ class Maxpool : public Layer {
     void properties();
 
     // forward and backward propagation
-    virtual void forward(double* in, double* out);
-    virtual void backward(double* in, double* out, double* delta);
+    void forward(double* in, double* out);
+    void backward(double* in, double* out, double* delta);
 };
 
 
@@ -221,9 +240,11 @@ class Conv : public Layer {
     void properties();
 
     // forward and backward propagation
-    virtual void forward(double* in, double* out);
-    virtual void backward(double* in, double* out, double* delta);
+    void forward(double* in, double* out);
+    void backward(double* in, double* out, double* delta);
 
     // update partial derivative of loss with respect to parmeters 
-    virtual void partial_param(double* in, double* delta);
+    void partial_param(double* in, double* delta);
 };
+
+#endif

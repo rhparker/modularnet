@@ -40,9 +40,8 @@ unsigned int argmax(int len, double* values) {
   return current_arg;
 }
 
-// constructor : passes through to Sequential
-Classifier::Classifier(std::vector< std::vector <int> > config, double sigma) 
-              : Sequential(config, sigma) {};
+// constructor : passes through to Net
+Classifier::Classifier(std::vector< std::vector <int> > config) : Net(config) {};
 
 // destructor
 Classifier::~Classifier() {};
@@ -80,11 +79,11 @@ double Classifier::compute_loss(int cnt, double** data, unsigned int* labels) {
     forward(data[i], train);
     // increment number correct if classification output from network 
     // (argmax of probability vector) matches label
-    if ( argmax( layer_sizes[num_layers], z[num_layers] ) == labels[i] ) {
+    if ( argmax( module_sizes[num_modules], z[num_modules] ) == labels[i] ) {
       my_correct += 1;
     }
     // update cross-entropy with sample
-    my_loss -= log( z[num_layers][ labels[i] ] );
+    my_loss -= log( z[num_modules][ labels[i] ] );
   }
 
 #ifdef USE_MPI
@@ -130,7 +129,7 @@ double Classifier::train_epoch(int cnt, double** data, unsigned int* labels,
   int num_batches = ceil( ((double) cnt) / batch_size );
 
   // allocate array for vector to feed back into backpropagation
-  double* out = new double[ layer_sizes[num_layers] ];
+  double* out = new double[ module_sizes[num_modules] ];
 
   // randomly shuffle training samples
   int* order = new int[cnt];
@@ -180,9 +179,9 @@ double Classifier::train_epoch(int cnt, double** data, unsigned int* labels,
       // step 2: backward propagation
       // compute output, which we feed back; put in last component of delta
       unsigned int yj;
-      for (int j = 0; j < layer_sizes[num_layers]; j++) {
+      for (int j = 0; j < module_sizes[num_modules]; j++) {
         yj = (j == labels[index]);
-        out[j] = z[num_layers][j] - yj;
+        out[j] = z[num_modules][j] - yj;
       }
       backward(out);
 

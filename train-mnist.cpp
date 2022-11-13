@@ -14,7 +14,7 @@
 #include "classifier.h"
 #include "loadmnist.h"
 
-#define FASHION
+// #define FASHION
 
 #ifdef FASHION
   #define TRAIN_IMAGES "fashion/train-images-idx3-ubyte"
@@ -98,99 +98,115 @@ int main(int argc, char* argv[]) {
 
   // // one layer linear
   // std::vector< std::vector <int > > config = {
-  //   {LINEAR,784, 10},
-  //   {SOFTMAX, 10}
+  //   {LINEAR, 784, 10},
+  //   {SOFTMAX}
   // };
   // learning_rate = 0.1;
 
   // // two layers linear
   // std::vector< std::vector <int > > config = {
   //   {LINEAR,784, 64},
-  //   {RELU, 64},
+  //   {RELU},
   //   {LINEAR,64, 10},
-  //   {SOFTMAX, 10}
+  //   {SOFTMAX}
   // };
   // learning_rate = 0.1;
 
-  // // two layers linear with dropout
+  // two layers linear with dropout
   // std::vector< std::vector <int > > config = {
-  //   {LINEAR,784, 64},
-  //   {RELU, 64},
-  //   {DROPOUT, 64},
-  //   {LINEAR,64, 10},
-  //   {SOFTMAX, 10}
+  //   {LINEAR, 784, 64},
+  //   {RELU},
+  //   {DROPOUT},
+  //   {LINEAR, 64, 10},
+  //   {SOFTMAX}
   // };
   // learning_rate = 0.1;
 
-  // // one convolutional layer
+  // one convolutional layer
   // std::vector< std::vector <int > > config = {
-  //   {LINEAR,784, 64},
-  //   {RELU, 64},
-  //   {DROPOUT, 64},
-  //   {CONV, 1,8,8,1,1,1},
+  //   {LINEAR, 784, 64},
+  //   {RELU},
+  //   {DROPOUT},
+  //   {CONV,1,8,8,1,1,1},
   //   {MAXPOOL,1,8,8,1,1,2,2},
-  //   {RELU, 16},
-  //   {LINEAR,16, 10},
-  //   {SOFTMAX, 10}
+  //   {RELU},
+  //   {LINEAR, 16, 10},
+  //   {SOFTMAX}
+  // };
+  // learning_rate = 0.1;
+
+  // std::vector< std::vector <int > > config = {
+  //   {LINEAR, 784, 64},
+  //   {RELU},
+  //   {DROPOUT},
+  //   {CONV,1,8,8,1,1,1},
+  //   {MAXPOOL,1,8,8,1,1,2,2},
+  //   {RELU},
+  //   {LINEAR, 16, 10},
+  //   {SOFTMAX}
   // };
   // learning_rate = 0.1;
 
   // // one convolutional layer, multi-channel
   // std::vector< std::vector <int > > config = {
   //   {LINEAR,784, 64},
-  //   {RELU, 64},
-  //   {DROPOUT, 64},
-  //   {CONV, 1,8,8,4,1,1},
+  //   {RELU},
+  //   {DROPOUT},
+  //   {CONV,1,8,8,4,1,1},
   //   {MAXPOOL,4,8,8,1,1,2,2},
-  //   {RELU, 64},
-  //   {LINEAR,64, 10},
-  //   {SOFTMAX, 10}
+  //   {RELU},
+  //   {LINEAR,64},
+  //   {SOFTMAX}
   // };
   // learning_rate = 0.1;
 
-  // // LeNet modernized
-  // std::vector< std::vector <int > > config = {
-  //   {CONV, 1,28,28,6,2,2},
-  //   {RELU, 4704},
-  //   {MAXPOOL, 6,28,28,1,1,2,2},
-  //   {CONV, 6,14,14,16,2,2},
-  //   {RELU, 3136},
-  //   {MAXPOOL, 16,14,14,1,1,2,2},
-  //   {LINEAR,784,120},
-  //   {RELU, 120},
-  //   {DROPOUT,120},
-  //   {LINEAR, 120,84},
-  //   {RELU, 84},
-  //   {DROPOUT,84},
-  //   {LINEAR, 84,10},
-  //   {SOFTMAX, 10}
-  // };
-  // learning_rate = 0.1;
-
-  // mini-Alexnet, modified for MNIST
+  // LeNet modernized
   std::vector< std::vector <int > > config = {
-    {CONV,    1,28,28,32,2,2 },
-    {RELU,    25088 },
-    {MAXPOOL, 32,28,28,1,1,2,2},
-    {CONV,    32,14,14,64,1,1},
-    {RELU,    12544},
-    {CONV,    64,14,14,64,1,1},
-    {RELU,    12544},
-    {CONV,    64,14,14,32,1,1},
-    {RELU,    6272},
-    {MAXPOOL, 32,14,14,1,1,2,2},
-    {LINEAR, 1568, 1024},
-    {RELU, 1024},
-    {DROPOUT, 1024},
-    {LINEAR, 1024, 1024},
-    {RELU, 1024},
-    {DROPOUT, 1024},
-    {LINEAR, 1024, 10},
-    {SOFTMAX, 10}
+    {CONV, 1,28,28,6,2,2},
+    {RELU},
+    {MAXPOOL, 6,28,28,1,1,2,2},
+    {CONV, 6,14,14,16,2,2},
+    {RELU},
+    {MAXPOOL, 16,14,14,1,1,2,2},
+    {LINEAR,784,120},
+    {RELU},
+    {DROPOUT},
+    {LINEAR, 120,84},
+    {RELU},
+    {DROPOUT},
+    {LINEAR, 84,10},
+    {SOFTMAX}
   };
-  learning_rate = 0.02;
+  learning_rate = 0.1;
 
-  Classifier C( config, sigma );
+  // // mini-Alexnet, modified for MNIST
+  // std::vector< std::vector <int > > config = {
+  //   {CONV,    1,28,28,32,2,2 },
+  //   {RELU},
+  //   {MAXPOOL, 32,28,28,1,1,2,2},
+  //   {CONV,    32,14,14,64,1,1},
+  //   {RELU},
+  //   {CONV,    64,14,14,64,1,1},
+  //   {RELU},
+  //   {CONV,    64,14,14,32,1,1},
+  //   {RELU},
+  //   {MAXPOOL, 32,14,14,1,1,2,2},
+  //   {LINEAR, 1568, 1024},
+  //   {RELU},
+  //   {DROPOUT},
+  //   {LINEAR, 1024, 1024},
+  //   {RELU},
+  //   {DROPOUT},
+  //   {LINEAR, 1024, 10},
+  //   {SOFTMAX}
+  // };
+  // learning_rate = 0.02;
+
+  Classifier C( {{SEQUENTIAL,784,10}} );
+  C.add_layers(0, config, sigma);
+
+  // Classifier C(seq_config,sigma);
+
 #ifdef USE_MPI
   C.sync();
 #endif
@@ -220,6 +236,7 @@ int main(int argc, char* argv[]) {
 
   // compute loss for training data and test data
   loss_time  = C.compute_loss(train_cnt, train_data, train_labels);
+
   train_acc = C.accuracy;
   train_loss = C.loss;
   loss_time += C.compute_loss(test_cnt, test_data, test_labels);
@@ -237,7 +254,7 @@ int main(int argc, char* argv[]) {
       << std::endl;
   }
 
-  int epochs = 10;
+  int epochs = 2;
   int batch_size = 256;
   double weight_decay = 0;
 
