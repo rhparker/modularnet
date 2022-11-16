@@ -210,35 +210,35 @@ int main(int argc, char* argv[]) {
   // learning_rate = 0.02;
 
   std::vector< std::vector <int > > VGG1 {
-    {CONV,1,28,28,32,1,1},
+    {CONV,1,28,28,16,1,1},
     {RELU},
-    {CONV,32,28,28,32,1,1},
+    {CONV,16,28,28,16,1,1},
     {RELU},
-    {MAXPOOL,32,28,28,1,1,2,2}
+    {MAXPOOL,16,28,28,1,1,2,2}
   };
   std::vector< std::vector <int > > VGG2 {
-    {CONV,32,14,14,64,1,1},
+    {CONV,16,14,14,32,1,1},
     {RELU},
-    {CONV,64,14,14,64,1,1},
+    {CONV,32,14,14,32,1,1},
     {RELU},
-    {MAXPOOL,64,14,14,1,1,2,2}
+    {MAXPOOL,32,14,14,1,1,2,2}
   };
   std::vector< std::vector <int > > VGGlinear {
-    {LINEAR, 3136, 2048},
+    {LINEAR, 1568, 1024},
     {RELU},
     {DROPOUT},
-    {LINEAR, 2048, 2048},
+    {LINEAR, 1024, 1024},
     {RELU},
     {DROPOUT},
-    {LINEAR, 2048, 10},
+    {LINEAR, 1024, 10},
     {SOFTMAX}
   };
   learning_rate = 0.05;
 
   Classifier C( {
-    {SEQUENTIAL,784,6272},
-    {SEQUENTIAL,6272,3136},
-    {SEQUENTIAL,3136,10},
+    {SEQUENTIAL,784,3136},
+    {SEQUENTIAL,3136,1568},
+    {SEQUENTIAL,1568,10},
   });
   C.add_layers(0, VGG1, sigma);
   C.add_layers(1, VGG2, sigma);
